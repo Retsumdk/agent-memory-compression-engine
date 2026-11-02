@@ -1,17 +1,53 @@
 {
   "name": "agent-memory-compression-engine",
-  "description": "Optimizes agent memory usage by compressing redundant information and implementing efficient storage strategies for distributed agent systems",
   "version": "1.0.0",
+  "description": "Deterministic agent-memory compression: redundancy clustering, extractive summaries, tiered append-only archive",
   "type": "module",
-  "scripts": {
-    "test": "bun test",
-    "build": "tsc"
+  "license": "MIT",
+  "keywords": [
+    "agent",
+    "memory",
+    "compression",
+    "deduplication",
+    "clustering",
+    "summarization",
+    "simhash",
+    "jaccard",
+    "append-only",
+    "typescript"
+  ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
   },
-  "dependencies": {
-    "commander": "^11.1.0"
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "bin": {
+    "amce": "./dist/cli-main.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepare": "tsc",
+    "test": "bun test",
+    "demo": "bun run src/cli-main.ts demo",
+    "verify:demo": "bun run scripts/verify-demo.ts"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Retsumdk/agent-memory-compression-engine.git"
   },
   "devDependencies": {
-    "bun-types": "^1.0.0",
-    "typescript": "^5.3.0"
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
   }
 }

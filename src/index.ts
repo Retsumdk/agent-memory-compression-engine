@@ -1,51 +1,43 @@
-#!/usr/bin/env bun
-/**
- * agent-memory-compression-engine - Optimizes agent memory usage by compressing redundant information and implementing efficient storage strategies for distributed agent systems
- * Built by Retsumdk
- */
-
-import { Command } from "commander";
-import { existsSync, readFileSync } from "fs";
-import { join } from "path";
-
-interface Config {
-  apiKey?: string;
-  baseUrl: string;
-  timeout: number;
-  retries: number;
-}
-
-const DEFAULTS: Config = {
-  baseUrl: "https://api.example.com",
-  timeout: 30000,
-  retries: 3,
-};
-
-function loadConfig(): Config {
-  const cfgPath = join(process.cwd(), "config.json");
-  if (existsSync(cfgPath)) {
-    try {
-      return { ...DEFAULTS, ...JSON.parse(readFileSync(cfgPath, "utf-8")) };
-    } catch { /* ignore */ }
-  }
-  return { ...DEFAULTS };
-}
-
-async function main(cfg: Config) {
-  console.log(`[${name}] Connected to ${cfg.baseUrl}`);
-  console.log(`[${name}] Timeout: ${cfg.timeout}ms | Retries: ${cfg.retries}`);
-  // TODO: implement your logic here
-  console.log(`[${name}] Done.`);
-}
-
-const program = new Command();
-program.name("agent-memory-compression-engine").description("Optimizes agent memory usage by compressing redundant information and implementing efficient storage strategies for distributed agent systems").version("1.0.0")
-  .option("-c, --config <path>", "Config file path", "config.json")
-  .option("-v, --verbose", "Verbose mode")
-  .action(async (opts) => {
-    const cfg = loadConfig();
-    if (opts.verbose) console.log("Verbose mode on");
-    try { await main(cfg); }
-    catch (e) { console.error(`Error: ${e}`); process.exit(1); }
-  });
-program.parse(process.argv);
+export {
+  MemoryCompressionEngine,
+  DEFAULT_ENGINE_OPTIONS,
+} from "./engine.js";
+export type { EngineOptions, AddOptions, TierCounts } from "./engine.js";
+export { MemoryStore, verifyStore } from "./store.js";
+export {
+  tokenize,
+  contentWords,
+  shingles,
+  jaccard,
+  termFrequency,
+  countTokens,
+  STOPWORDS,
+} from "./tokens.js";
+export { simhash64, hammingDistance, hash64 } from "./simhash.js";
+export { clusterEntries, DisjointSet } from "./cluster.js";
+export type { ClusteringOptions, ClusterableEntry } from "./cluster.js";
+export { summarizeCluster, splitSentences } from "./summarize.js";
+export type { SummaryOptions } from "./summarize.js";
+export { importanceScore, tierOf, DEFAULT_IMPORTANCE } from "./importance.js";
+export type { ImportanceOptions } from "./importance.js";
+export { renderCycleReport, renderStats } from "./report.js";
+export { createServer, startServer } from "./server.js";
+export type { ServerOptions } from "./server.js";
+export {
+  AmcError,
+  ValidationError,
+  StoreCorruptError,
+  StoreIoError,
+} from "./types.js";
+export type {
+  MemoryEntry,
+  EntryKind,
+  Tier,
+  SummaryInfo,
+  CycleMetrics,
+  CompressionResult,
+  StoredCycle,
+  StoreRecord,
+  AppendBody,
+  VerifyResult,
+} from "./types.js";
